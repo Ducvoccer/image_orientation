@@ -243,7 +243,7 @@ class RotNetDataGenerator(Iterator):
         self.rotate = rotate
         self.crop_center = crop_center
         self.crop_largest_rect = crop_largest_rect
-        self.shuffle = shuffle
+        self.shuffle = False
 
         if self.color_mode not in {'rgb', 'grayscale'}:
             raise ValueError('Invalid color mode:', self.color_mode,
