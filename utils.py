@@ -9,7 +9,7 @@ from keras.preprocessing.image import Iterator
 from keras.utils.np_utils import to_categorical
 import keras.backend as K
 
-## test 2
+
 
 def angle_difference(x, y):
     """
@@ -243,7 +243,7 @@ class RotNetDataGenerator(Iterator):
         self.rotate = rotate
         self.crop_center = crop_center
         self.crop_largest_rect = crop_largest_rect
-        self.shuffle = False
+        self.shuffle = shuffle
 
         if self.color_mode not in {'rgb', 'grayscale'}:
             raise ValueError('Invalid color mode:', self.color_mode,
