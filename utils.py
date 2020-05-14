@@ -269,7 +269,8 @@ class RotNetDataGenerator(Iterator):
         batch_x = np.zeros((len(index_array),) + self.input_shape, dtype='float32')
         # create array to hold the labels
         batch_y = np.zeros(len(index_array), dtype='float32')
-
+        # create array to hold the labels of quarter
+        batch_y_quarter = np.zeros(len(index_array), dtype='float32')
         # iterate through the current batch
         for i, j in enumerate(index_array):
             if self.filenames is None:
@@ -286,6 +287,17 @@ class RotNetDataGenerator(Iterator):
             else:
                 rotation_angle = 0
 
+
+            # set value of quarter
+            if rotation_angle < 90:
+                batch_y_quarter[i] = 0
+            elif rotation_angle < 180:
+                batch_y_quarter[i] = 1
+            elif rotation_angle < 270:
+                batch_y_quarter[i] = 2
+            elif rotation_angle < 360:
+                batch_y_quarter[i] = 3
+                
             # generate the rotated image
             rotated_image = generate_rotated_image(
                 image,
@@ -306,6 +318,7 @@ class RotNetDataGenerator(Iterator):
         if self.one_hot:
             # convert the numerical labels to binary labels
             batch_y = to_categorical(batch_y, 360)
+            batch_y_quarter = to_categorical(batch_y_quarter, 4)
         else:
             batch_y /= 360
 
@@ -313,7 +326,7 @@ class RotNetDataGenerator(Iterator):
         if self.preprocess_func:
             batch_x = self.preprocess_func(batch_x)
 
-        return batch_x, batch_y
+        return batch_x, batch_y_quarter
 
     def next(self):
         with self.lock:
