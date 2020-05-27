@@ -293,6 +293,7 @@ class RotNetDataGenerator(Iterator):
 
 
             # set value of quarter - only pharse 1
+            quarter = 0
             if self.task_pharse == 1:
                 if rotation_angle < 90:
                     quarter = 0
