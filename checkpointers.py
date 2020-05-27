@@ -12,6 +12,7 @@ from time import time
 from tensorflow.python.lib.io import file_io
 import logging
 import tensorflow as tf
+import numpy as np
         
         
 class ModelCheckpoint(tf.keras.callbacks.Callback):
