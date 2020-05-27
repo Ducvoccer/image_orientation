@@ -43,13 +43,12 @@ class ModelCheckpoint(tf.keras.callbacks.Callback):
         period: Interval (number of epochs) between checkpoints.
     """
 
-    def __init__(self, job_dir, filepath, monitor='val_loss', verbose=0,
+    def __init__(self, filepath, monitor='val_loss', verbose=0,
                  save_best_only=False, save_weights_only=False,
                  mode='auto', period=1):
         super(ModelCheckpoint, self).__init__()
         self.monitor = monitor
         self.verbose = verbose
-        self.job_dir = job_dir
         self.filepath = filepath
         self.save_best_only = save_best_only
         self.save_weights_only = save_weights_only
