@@ -231,7 +231,7 @@ class RotNetDataGenerator(Iterator):
 
     def __init__(self, input, input_shape=None, color_mode='rgb', batch_size=64,
                  one_hot=True, preprocess_func=None, rotate=True, crop_center=False,
-                 crop_largest_rect=False, shuffle=False, seed=None, task_pharse):
+                 crop_largest_rect=False, shuffle=False, seed=None, task_pharse=1):
 
         self.images = None
         self.filenames = None
@@ -292,7 +292,6 @@ class RotNetDataGenerator(Iterator):
                 rotation_angle = 0
 
 
-
             # set value of quarter - only pharse 1
             if self.task_pharse == 1:
                 if rotation_angle < 90:
@@ -324,8 +323,11 @@ class RotNetDataGenerator(Iterator):
 
         if self.one_hot:
             # convert the numerical labels to binary labels
-            batch_y = to_categorical(batch_y, 90)
-            batch_y_quarter = to_categorical(batch_y_quarter, 4)
+            if self.task_pharse == 1:
+                batch_y_quarter = to_categorical(batch_y_quarter, 4)
+            else:
+                batch_y = to_categorical(batch_y, 90)
+
         else:
             batch_y /= 90
 
