@@ -231,7 +231,7 @@ class RotNetDataGenerator(Iterator):
 
     def __init__(self, input, input_shape=None, color_mode='rgb', batch_size=64,
                  one_hot=True, preprocess_func=None, rotate=True, crop_center=False,
-                 crop_largest_rect=False, shuffle=False, seed=None):
+                 crop_largest_rect=False, shuffle=False, seed=None, task_pharse):
 
         self.images = None
         self.filenames = None
@@ -244,6 +244,7 @@ class RotNetDataGenerator(Iterator):
         self.crop_center = crop_center
         self.crop_largest_rect = crop_largest_rect
         self.shuffle = shuffle
+        self.task_pharse = task_pharse
 
         if self.color_mode not in {'rgb', 'grayscale'}:
             raise ValueError('Invalid color mode:', self.color_mode,
@@ -282,22 +283,27 @@ class RotNetDataGenerator(Iterator):
                     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             if self.rotate:
+                if self.task_pharse == 1:
                 # get a random angle
-                rotation_angle = np.random.randint(360)
+                    rotation_angle = np.random.randint(360)
+                else:
+                    rotation_angle = np.random.randint(90)
             else:
                 rotation_angle = 0
 
 
-            # set value of quarter
-            if rotation_angle < 90:
-                batch_y_quarter[i] = 0
-            elif rotation_angle < 180:
-                batch_y_quarter[i] = 1
-            elif rotation_angle < 270:
-                batch_y_quarter[i] = 2
-            elif rotation_angle < 360:
-                batch_y_quarter[i] = 3
-                
+
+            # set value of quarter - only pharse 1
+            if self.task_pharse == 1:
+                if rotation_angle < 90:
+                    quarter = 0
+                elif rotation_angle < 180:
+                    quarter = 1
+                elif rotation_angle < 270:
+                    quarter = 2
+                elif rotation_angle < 360:
+                    quarter = 3
+                    
             # generate the rotated image
             rotated_image = generate_rotated_image(
                 image,
@@ -314,20 +320,23 @@ class RotNetDataGenerator(Iterator):
             # store the image and label in their corresponding batches
             batch_x[i] = rotated_image
             batch_y[i] = rotation_angle
+            batch_y_quarter[i] = quarter
 
         if self.one_hot:
             # convert the numerical labels to binary labels
-            batch_y = to_categorical(batch_y, 360)
+            batch_y = to_categorical(batch_y, 90)
             batch_y_quarter = to_categorical(batch_y_quarter, 4)
         else:
-            batch_y /= 360
+            batch_y /= 90
 
         # preprocess input images
         if self.preprocess_func:
             batch_x = self.preprocess_func(batch_x)
 
-        return batch_x, batch_y_quarter
-
+        if self.task_pharse == 1:
+            return batch_x, batch_y_quarter
+        else:
+            return batch_x, batch_y
     def next(self):
         with self.lock:
             # get input data index and size of the current batch
