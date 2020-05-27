@@ -11,8 +11,7 @@ from collections import Iterable
 from time import time
 from tensorflow.python.lib.io import file_io
 import logging
-
-
+import tensorflow as tf
         
         
 class ModelCheckpoint(tf.keras.callbacks.Callback):
