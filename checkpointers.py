@@ -1,21 +1,38 @@
-import csv
-import six
-
 import time
 import warnings
 import io
-
-from collections import OrderedDict
-from collections import Iterable
-
 from time import time
-from tensorflow.python.lib.io import file_io
 import logging
-import tensorflow as tf
 import numpy as np
-        
-        
-class ModelCheckpoint(tf.keras.callbacks.Callback):
+import keras
+from datetime import datetime
+import pytz
+from pytz import timezone
+class ModelSaveDriveTool(keras.callbacks.Callback):
+    """
+    save the model ater every epochs to google drive
+    # Arguremts
+        ...
+    """
+    def __init__(self, output_folder, model_save_name):
+        super(ModelCheckpoint, self).__init__()
+        self.output_folder = output_folder
+        self.model_save_name = model_save_name
+
+    def on_train_begin(self):
+        tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
+        cur_time = datetime.now(tz_VN)
+        time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
+        self.folder_path = '/content/drive/My Drive/share_cv/Machine_Learning/weights/' + time_folder
+        try:
+            os.mkdir(folder_path)
+        except Exception as e:
+            print(e)
+    def on_epoch_end(self):
+        os.system('cp {} {}'.format(os.path.join(self.output_folder, self.model_save_name), self.folder_path))
+
+
+class ModelCheckpoint(keras.callbacks.Callback):
     """Save the model after every epoch.
     `filepath` can contain named formatting options,
     which will be filled the value of `epoch` and
