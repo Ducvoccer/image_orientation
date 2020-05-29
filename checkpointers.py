@@ -15,7 +15,7 @@ class ModelSaveDriveTool(keras.callbacks.Callback):
         ...
     """
     def __init__(self, output_folder, model_save_name):
-        super(ModelCheckpoint, self).__init__()
+        super(ModelSaveDriveTool, self).__init__()
         self.output_folder = output_folder
         self.model_save_name = model_save_name
 
