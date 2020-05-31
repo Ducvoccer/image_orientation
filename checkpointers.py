@@ -8,24 +8,29 @@ import keras
 from datetime import datetime
 import pytz
 from pytz import timezone
+import os
 class ModelSaveDriveTool(keras.callbacks.Callback):
     """
     save the model ater every epochs to google drive
     # Arguremts
-        ...
+        `output_folder`: folder contain weights file
+        `model_save_name`: name of weights file
+        `task_phrase`: 
     """
-    def __init__(self, output_folder, model_save_name):
+    def __init__(self, output_folder, model_save_name, task_pharse):
         super(ModelSaveDriveTool, self).__init__()
         self.output_folder = output_folder
         self.model_save_name = model_save_name
+        self.task_pharse = task_pharse
 
     def on_train_begin(self):
         tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
         cur_time = datetime.now(tz_VN)
         time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
-        self.folder_path = '/content/drive/My Drive/share_cv/Machine_Learning/weights/' + time_folder
+        task_phare_folder = 'task_' + str(self.task_pharse)
+        self.folder_path = '/content/drive/My Drive/share_cv/Machine_Learning/weights/' + task_phare_folder + '/' + time_folder
         try:
-            os.mkdir(folder_path)
+            os.mkdir(self.folder_path)
         except Exception as e:
             print(e)
     def on_epoch_end(self):
