@@ -78,7 +78,7 @@ class ModelCheckpoint(keras.callbacks.Callback):
                 self.best = np.Inf
 
 
-    def on_train_begin(self):
+    def on_train_begin(self, logs=None):
         tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
         cur_time = datetime.now(tz_VN)
         time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
