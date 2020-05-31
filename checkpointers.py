@@ -40,10 +40,13 @@ class ModelCheckpoint(keras.callbacks.Callback):
         period: Interval (number of epochs) between checkpoints.
     """
 
-    def __init__(self, filepath, monitor='val_loss', verbose=0,
+    def __init__(self, drive_folder_path, model_save_name, monitor='val_loss', verbose=0,
                  save_best_only=False, save_weights_only=False,
                  mode='auto', period=1, task_pharse):
         super(ModelCheckpoint, self).__init__()
+        self.drive_folder_path = drive_folder_path
+        self.model_save_name = model_save_name
+        
         self.monitor = monitor
         self.verbose = verbose
         self.filepath = filepath
@@ -78,8 +81,10 @@ class ModelCheckpoint(keras.callbacks.Callback):
         tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
         cur_time = datetime.now(tz_VN)
         time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
+
         task_phare_folder = 'task_' + str(self.task_pharse)
-        self.folder_path = '/content/drive/My Drive/share_cv/Machine_Learning/weights/' + task_phare_folder + '/' + time_folder
+        
+        self.folder_path = os.path.join(self.drive_folder_path, task_phare_folder) + '/' + time_folder
         try:
             os.mkdir(self.folder_path)
         except Exception as e:
