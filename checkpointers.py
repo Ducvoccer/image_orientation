@@ -40,16 +40,17 @@ class ModelCheckpoint(keras.callbacks.Callback):
         period: Interval (number of epochs) between checkpoints.
     """
 
-    def __init__(self, drive_folder_path, model_save_name, monitor='val_loss', verbose=0,
+    def __init__(self, drive_folder_path=None, model_save_name=None, monitor='val_loss', verbose=0,
                  save_best_only=False, save_weights_only=False,
-                 mode='auto', period=1, task_pharse):
+                 mode='auto', period=1, task_pharse=1):
         super(ModelCheckpoint, self).__init__()
         self.drive_folder_path = drive_folder_path
         self.model_save_name = model_save_name
-        
+
         self.monitor = monitor
         self.verbose = verbose
-        self.filepath = filepath
+        self.drive_folder_path = drive_folder_path
+        self.model_save_name = model_save_name
         self.save_best_only = save_best_only
         self.save_weights_only = save_weights_only
         self.period = period
