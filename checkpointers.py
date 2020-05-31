@@ -9,32 +9,6 @@ from datetime import datetime
 import pytz
 from pytz import timezone
 import os
-class ModelSaveDriveTool(keras.callbacks.Callback):
-    """
-    save the model ater every epochs to google drive
-    # Arguremts
-        `output_folder`: folder contain weights file
-        `model_save_name`: name of weights file
-        `task_phrase`: 
-    """
-    def __init__(self, output_folder, model_save_name, task_pharse):
-        super(ModelSaveDriveTool, self).__init__()
-        self.output_folder = output_folder
-        self.model_save_name = model_save_name
-        self.task_pharse = task_pharse
-
-    def on_train_begin(self):
-        tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
-        cur_time = datetime.now(tz_VN)
-        time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
-        task_phare_folder = 'task_' + str(self.task_pharse)
-        self.folder_path = '/content/drive/My Drive/share_cv/Machine_Learning/weights/' + task_phare_folder + '/' + time_folder
-        try:
-            os.mkdir(self.folder_path)
-        except Exception as e:
-            print(e)
-    def on_epoch_end(self):
-        os.system('cp {} {}'.format(os.path.join(self.output_folder, self.model_save_name), self.folder_path))
 
 
 class ModelCheckpoint(keras.callbacks.Callback):
@@ -68,7 +42,7 @@ class ModelCheckpoint(keras.callbacks.Callback):
 
     def __init__(self, filepath, monitor='val_loss', verbose=0,
                  save_best_only=False, save_weights_only=False,
-                 mode='auto', period=1):
+                 mode='auto', period=1, task_pharse):
         super(ModelCheckpoint, self).__init__()
         self.monitor = monitor
         self.verbose = verbose
@@ -77,6 +51,7 @@ class ModelCheckpoint(keras.callbacks.Callback):
         self.save_weights_only = save_weights_only
         self.period = period
         self.epochs_since_last_save = 0
+        self.task_pharse = task_pharse
 
         if mode not in ['auto', 'min', 'max']:
             warnings.warn('ModelCheckpoint mode %s is unknown, '
@@ -98,7 +73,20 @@ class ModelCheckpoint(keras.callbacks.Callback):
                 self.monitor_op = np.less
                 self.best = np.Inf
 
+
+    def on_train_begin(self):
+        tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
+        cur_time = datetime.now(tz_VN)
+        time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
+        task_phare_folder = 'task_' + str(self.task_pharse)
+        self.folder_path = '/content/drive/My Drive/share_cv/Machine_Learning/weights/' + task_phare_folder + '/' + time_folder
+        try:
+            os.mkdir(self.folder_path)
+        except Exception as e:
+            print(e)
+    
     def on_epoch_end(self, epoch, logs=None):
+        print(logs)
         logs = logs or {}
         self.epochs_since_last_save += 1
         if self.epochs_since_last_save >= self.period:
