@@ -291,22 +291,6 @@ class RotNetDataGenerator(Iterator):
             else:
                 rotation_angle = 0
 
-
-            # set value of quarter - only pharse 1
-<<<<<<< HEAD
-            quarter = 0
-            if self.task_pharse == 1:
-                if rotation_angle < 90:
-                    quarter = 0
-                elif rotation_angle < 180:
-                    quarter = 1
-                elif rotation_angle < 270:
-                    quarter = 2
-                elif rotation_angle < 360:
-                    quarter = 3
-                    
-=======
-        
             if rotation_angle < 90:
                 quarter = 0
             elif rotation_angle < 180:
@@ -315,8 +299,7 @@ class RotNetDataGenerator(Iterator):
                 quarter = 2
             elif rotation_angle < 360:
                 quarter = 3
-                
->>>>>>> 757501019006524652ab9db549858846e45ab9a3
+
             # generate the rotated image
             rotated_image = generate_rotated_image(
                 image,
