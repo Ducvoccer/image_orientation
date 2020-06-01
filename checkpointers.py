@@ -4,7 +4,6 @@ import io
 from time import time
 import logging
 import numpy as np
-import keras
 from datetime import datetime
 import pytz
 from pytz import timezone
@@ -79,18 +78,23 @@ class ModelCheckpoint(keras.callbacks.Callback):
 
 
     def on_train_begin(self, logs=None):
-        tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
-        cur_time = datetime.now(tz_VN)
-        time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
+        # tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
+        # cur_time = datetime.now(tz_VN)
+        # time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
 
-        task_phare_folder = 'task_' + str(self.task_pharse)
+        # task_phare_folder = 'task_' + str(self.task_pharse)
         
-        self.folder_path = os.path.join(self.drive_folder_path, task_phare_folder) + '/' + time_folder
+        # self.folder_path = os.path.join(self.drive_folder_path, task_phare_folder) + '/' + time_folder
+        # try:
+        #     os.mkdir(self.folder_path)
+        # except Exception as e:
+        #     print(e)
+
+        #delete folder
         try:
-            os.mkdir(self.folder_path)
-        except Exception as e:
-            print(e)
-    
+            os.system('rm {}/*'.format(self.drive_folder_path))
+        except:
+            print("can't remove folder")
     def on_epoch_end(self, epoch, logs=None):
         print(logs)
         logs = logs or {}
