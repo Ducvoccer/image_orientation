@@ -101,11 +101,10 @@ class ModelCheckpoint(keras.callbacks.Callback):
         logs = logs or {}
         self.epochs_since_last_save += 1
 
-        filepath = os.path.join(self.drive_folder_path, self.model_save_name)
+        filepath = os.path.join(self.drive_folder_path, self.model_save_name).format(epoch=epoch + 1, **logs)
 
         if self.epochs_since_last_save >= self.period:
             self.epochs_since_last_save = 0
-            filepath = self.filepath.format(epoch=epoch + 1, **logs)
             if self.save_best_only:
                 current = logs.get(self.monitor)
                 if current is None:
