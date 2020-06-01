@@ -107,7 +107,7 @@ class ModelCheckpoint(keras.callbacks.Callback):
                 else:
                     if self.monitor_op(current, self.best):
                         if self.verbose > 0:
-                            print('\nEpoch {:05d}: {} improved from {:0.5f} to {:0.5f}, saving model to {}'.format(epoch + 1, 
+                            print('Epoch {:05d}: {} improved from {:0.5f} to {:0.5f}, saving model to {}'.format(epoch + 1, 
                                         self.monitor, self.best,current, filepath))
                         self.best = current
                         if self.save_weights_only:
@@ -116,10 +116,10 @@ class ModelCheckpoint(keras.callbacks.Callback):
                             self.model.save(filepath, overwrite=True)
                     else:
                         if self.verbose > 0:
-                            print('\nEpoch {:05d}: {} did not improve from {:0.5f}'.format(epoch + 1, self.monitor, self.best))
+                            print('Epoch {:05d}: {} did not improve from {:0.5f}'.format(epoch + 1, self.monitor, self.best))
             else:
                 if self.verbose > 0:
-                    print('\nEpoch {:05d}: saving model to {}'.format(epoch + 1, filepath))
+                    print('Epoch {:05d}: saving model to {}'.format(epoch + 1, filepath))
                 if self.save_weights_only:
                     self.model.save_weights(filepath, overwrite=True)
                 else:
