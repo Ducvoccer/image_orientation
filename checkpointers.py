@@ -92,17 +92,14 @@ class ModelCheckpoint(keras.callbacks.Callback):
         #     print(e)
 
         #delete folder
-        try:
-            os.system('rm {}/*'.format(self.drive_folder_path))
-        except:
-            print("can't remove folder")
+        pass
     def on_epoch_end(self, epoch, logs=None):
         print(logs)
         logs = logs or {}
         self.epochs_since_last_save += 1
 
         filepath = os.path.join(self.drive_folder_path, self.model_save_name).format(epoch=epoch + 1, **logs)
-
+        print(filepath)
         if self.epochs_since_last_save >= self.period:
             self.epochs_since_last_save = 0
             if self.save_best_only:
