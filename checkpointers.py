@@ -78,21 +78,21 @@ class ModelCheckpoint(keras.callbacks.Callback):
                 self.best = np.Inf
 
 
-    def on_train_begin(self, logs=None):
-        # tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
-        # cur_time = datetime.now(tz_VN)
-        # time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
+    # def on_train_begin(self, logs=None):
+    #     # tz_VN = pytz.timezone('Asia/Ho_Chi_Minh') 
+    #     # cur_time = datetime.now(tz_VN)
+    #     # time_folder = str(cur_time.month) + '_' + str(cur_time.day) + ':' + str(cur_time.hour) + '_' + str(cur_time.minute)
 
-        # task_phare_folder = 'task_' + str(self.task_pharse)
+    #     # task_phare_folder = 'task_' + str(self.task_pharse)
         
-        # self.folder_path = os.path.join(self.drive_folder_path, task_phare_folder) + '/' + time_folder
-        # try:
-        #     os.mkdir(self.folder_path)
-        # except Exception as e:
-        #     print(e)
+    #     # self.folder_path = os.path.join(self.drive_folder_path, task_phare_folder) + '/' + time_folder
+    #     # try:
+    #     #     os.mkdir(self.folder_path)
+    #     # except Exception as e:
+    #     #     print(e)
 
-        #delete folder
-        pass
+    #     #delete folder
+    #     pass
     def on_epoch_end(self, epoch, logs=None):
         logs = logs or {}
         self.epochs_since_last_save += 1
