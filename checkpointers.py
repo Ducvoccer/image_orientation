@@ -8,6 +8,7 @@ from datetime import datetime
 import pytz
 from pytz import timezone
 import os
+import keras
 
 
 class ModelCheckpoint(keras.callbacks.Callback):
