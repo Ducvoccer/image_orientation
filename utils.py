@@ -284,10 +284,11 @@ class RotNetDataGenerator(Iterator):
 
             if self.rotate:
                 if self.task_pharse == 1:
-                # get a random angle
                     rotation_angle = np.random.randint(360)
-                else:
+                elif self.task_pharse == 2:                
                     rotation_angle = np.random.randint(90)
+                elif self.task_pharse == 3:
+                    rotation_angle = np.random.randint(360)       
             else:
                 rotation_angle = 0
 
@@ -322,8 +323,10 @@ class RotNetDataGenerator(Iterator):
             # convert the numerical labels to binary labels
             if self.task_pharse == 1:
                 batch_y_quarter = to_categorical(batch_y_quarter, 4)
-            else:
+            elif self.task_pharse == 2:
                 batch_y = to_categorical(batch_y, 90)
+            elif self.task_pharse == 3:
+                batch_y = to_categorical(batch_y, 360)
 
         else:
             batch_y /= 90
@@ -334,7 +337,9 @@ class RotNetDataGenerator(Iterator):
 
         if self.task_pharse == 1:
             return batch_x, batch_y_quarter
-        else:
+        elif self.task_pharse == 2:
+            return batch_x, batch_y
+        elif self.task_pharse == 3:
             return batch_x, batch_y
     def next(self):
         with self.lock:
